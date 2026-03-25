@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Ticket, Mail, Calendar, AlertCircle } from 'lucide-react'
+import { Mail, Calendar, AlertCircle } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
+import DensoLogo from '../../components/DensoLogo'
 
 export default function AccessPage() {
   const navigate = useNavigate()
@@ -35,11 +36,8 @@ export default function AccessPage() {
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-sm">
           <div className="flex flex-col items-center mb-8">
-            <div className="bg-accent rounded-2xl p-3 mb-3 shadow-card-md">
-              <Ticket size={28} className="text-white" />
-            </div>
-            <h1 className="text-white text-xl font-bold tracking-tight">Ingressos Corporativos</h1>
-            <p className="text-white/60 text-sm mt-1">Portal do Colaborador</p>
+            <DensoLogo variant="white" height={44} style={{ marginBottom: 12 }} />
+            <p className="text-white/60 text-sm">Portal do Colaborador · Ingressos Corporativos</p>
           </div>
 
           <div className="card shadow-card-md">

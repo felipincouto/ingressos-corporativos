@@ -10,9 +10,10 @@ export default {
           light: '#EBF4FF',
         },
         accent: {
-          DEFAULT: '#F59E0B',
-          light: '#FEF3C7',
+          DEFAULT: '#DC0032',
+          light: '#FFF0F2',
         },
+        denso: '#DC0032',
         success: '#10B981',
         danger: '#EF4444',
         surface: '#F8FAFC',

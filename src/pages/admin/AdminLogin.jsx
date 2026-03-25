@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Shield, Mail, Lock, AlertCircle } from 'lucide-react'
+import { Mail, Lock, AlertCircle } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
+import DensoLogo from '../../components/DensoLogo'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
@@ -33,11 +34,9 @@ export default function AdminLogin() {
       style={{ background: 'linear-gradient(160deg, #0F172A 0%, #1E3A5F 55%, #F8FAFC 55%)' }}>
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
-          <div className="bg-primary rounded-2xl p-3 mb-3 shadow-card-md border border-white/10">
-            <Shield size={28} className="text-accent" />
-          </div>
-          <h1 className="text-white text-xl font-bold tracking-tight">Painel Administrativo</h1>
-          <p className="text-white/60 text-sm mt-1">Acesso restrito</p>
+          <DensoLogo variant="white" height={44} style={{ marginBottom: 12 }} />
+          <h1 className="text-white text-base font-semibold tracking-tight">Painel Administrativo</h1>
+          <p className="text-white/50 text-sm mt-1">Ingressos Corporativos</p>
         </div>
 
         <div className="card shadow-card-md">

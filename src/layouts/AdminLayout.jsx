@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Upload, List, Printer, PackageCheck,
-  QrCode, BarChart3, LogOut, Ticket, Trophy, CalendarDays
+  QrCode, BarChart3, LogOut, Trophy, CalendarDays
 } from 'lucide-react'
 import clsx from 'clsx'
 import { useApp } from '../context/AppContext'
+import DensoLogo from '../components/DensoLogo'
 
 const NAV = [
   { to: '/admin/dashboard',  label: 'Dashboard',   icon: LayoutDashboard },
@@ -14,7 +15,7 @@ const NAV = [
   { to: '/admin/impressao',  label: 'Impressão',    icon: Printer },
   { to: '/admin/retirada',   label: 'Retirada',     icon: PackageCheck },
   { to: '/admin/checkin',    label: 'Check-in',     icon: QrCode },
-  { to: '/admin/evento',     label: 'Evento',       icon: CalendarDays },
+  { to: '/admin/evento',     label: 'Eventos',      icon: CalendarDays },
   { to: '/admin/relatorios', label: 'Relatórios',   icon: BarChart3 },
   { to: '/admin/sorteio',    label: 'Sorteio',      icon: Trophy },
 ]
@@ -39,13 +40,10 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside className="w-56 bg-primary flex flex-col shrink-0">
         {/* Logo */}
-        <div className="flex items-center gap-2.5 px-5 py-5 border-b border-white/10">
-          <div className="bg-accent rounded-lg p-1.5">
-            <Ticket size={18} className="text-white" />
-          </div>
-          <span className="text-white font-bold text-sm leading-tight">
-            Ingressos<br />
-            <span className="text-white/60 font-normal text-xs">Corporativos</span>
+        <div className="flex flex-col items-start px-5 py-4 border-b border-white/10 gap-1">
+          <DensoLogo variant="white" height={28} />
+          <span className="text-white/50 text-xs font-normal" style={{ marginLeft: 1 }}>
+            Ingressos Corporativos
           </span>
         </div>
 

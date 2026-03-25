@@ -28,7 +28,24 @@
       "Bash(vercel git:*)",
       "Bash(open -a \"Visual Studio Code\" /Users/felipe/Downloads/denso)",
       "Bash(open -a \"Code\" /Users/felipe/Downloads/denso)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(export PATH=\"/Users/felipe/.nvm/versions/node/v24.14.0/bin:$PATH\")",
+      "Bash(PATH=\"/Users/felipe/.nvm/versions/node/v24.14.0/bin:$PATH\" git status)",
+      "Bash(PATH=\"/Users/felipe/.nvm/versions/node/v24.14.0/bin:$PATH\" git add -A -- ':!.claude/settings.local.json')",
+      "Bash(PATH=\"/Users/felipe/.nvm/versions/node/v24.14.0/bin:$PATH\" git add api/admin/auth.js api/admin/evento.js src/App.jsx src/context/AppContext.jsx src/layouts/AdminLayout.jsx src/pages/admin/AdminDashboard.jsx src/pages/admin/Sorteio.jsx src/pages/admin/AdminLogin.jsx src/pages/admin/EventoConfig.jsx src/pages/employee/EventDashboard.jsx src/pages/employee/TermsPage.jsx src/pages/employee/TicketViewer.jsx src/utils/generateTicketsPDF.js)",
+      "Bash(PATH=\"/Users/felipe/.nvm/versions/node/v24.14.0/bin:$PATH\" git push)",
+      "Bash(node -e \"const {createHash} = require\\(''crypto''\\); console.log\\(createHash\\(''sha256''\\).update\\(''denso12@'' + ''bizideia_salt_2026''\\).digest\\(''hex''\\)\\)\")",
+      "Bash(/Users/felipe/.nvm/versions/node/v24.14.0/bin/node -e \"const {createHash} = require\\(''crypto''\\); console.log\\(createHash\\(''sha256''\\).update\\(''denso12@'' + ''bizideia_salt_2026''\\).digest\\(''hex''\\)\\)\")",
+      "Bash(ls /Users/felipe/Downloads/denso/.env*)",
+      "Bash(/Users/felipe/.nvm/versions/node/v24.14.0/bin/node --input-type=module:*)",
+      "Bash(curl -s -X POST https://ingressos-corporativos.vercel.app/api/admin/auth -H 'Content-Type: application/json' -d '{\"\"\"\"email\"\"\"\":\"\"\"\"suporte@bizideia.com\"\"\"\",\"\"\"\"senha\"\"\"\":\"\"\"\"denso12@\"\"\"\"}')",
+      "Bash(curl -s https://ingressos-corporativos.vercel.app/api/admin/evento)",
+      "Bash(curl -sL \"https://www.denso.com/br/pt/-/media/common/favicon.ico?h=32&w=32&hash=A40BA4B5BA32597064B88059A5563C69B537E679\" -o /Users/felipe/Downloads/denso/public/favicon.ico)",
+      "Bash(sed -i '' 's/background: #F59E0B; color: #fff; font-weight: 600;/background: #DC0032; color: #fff; font-weight: 600;/g' index.html)",
+      "Bash(sed -i '' 's/.btn-primary:hover { background: #D97706; }/.btn-primary:hover { background: #B8002A; }/g' index.html)",
+      "Bash(sed -i '' 's/.text-accent { color: #F59E0B; }/.text-accent { color: #DC0032; }/g' index.html)",
+      "Bash(sed -i '' 's/.bg-accent { background-color: #F59E0B; }/.bg-accent { background-color: #DC0032; }/g' index.html)",
+      "Bash(sed -i '' 's/.border-accent { border-color: #F59E0B; }/.border-accent { border-color: #DC0032; }/g' index.html)"
     ]
   }
 }
