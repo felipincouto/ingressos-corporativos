@@ -1,0 +1,87 @@
+import { useNavigate } from 'react-router-dom'
+import { MapPin, Calendar, Ticket, ChevronRight, ClipboardList } from 'lucide-react'
+import EmployeeLayout from '../../layouts/EmployeeLayout'
+
+export default function EventDashboard() {
+  const navigate = useNavigate()
+
+  return (
+    <EmployeeLayout showSteps={false}>
+      {/* Greeting */}
+      <div className="mb-4">
+        <p className="text-muted text-sm">Bem-vindo,</p>
+        <h1 className="text-primary">João Silva</h1>
+      </div>
+
+      {/* Event card */}
+      <div className="rounded-card overflow-hidden shadow-card-md mb-5">
+        {/* Banner */}
+        <div className="bg-gradient-to-r from-primary to-primary-medium p-6 pb-8 relative">
+          <div className="absolute inset-0 opacity-10"
+            style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+          <p className="text-accent font-semibold text-xs uppercase tracking-widest mb-1">Evento</p>
+          <h2 className="text-white text-2xl font-bold">COPERNIC 2025</h2>
+          <div className="flex flex-wrap gap-3 mt-3">
+            <span className="flex items-center gap-1.5 text-white/70 text-sm">
+              <Calendar size={13} /> 15 de Março de 2025
+            </span>
+            <span className="flex items-center gap-1.5 text-white/70 text-sm">
+              <MapPin size={13} /> Expo SP — Pavilhão 5
+            </span>
+          </div>
+        </div>
+
+        {/* Quota highlight */}
+        <div className="bg-white px-6 py-5 flex items-center justify-between">
+          <div>
+            <p className="text-muted text-sm mb-0.5">Seus ingressos disponíveis</p>
+            <div className="flex items-end gap-2">
+              <span className="text-5xl font-bold text-primary leading-none">5</span>
+              <span className="text-muted text-sm mb-1">ingressos</span>
+            </div>
+          </div>
+          <div className="bg-primary-light rounded-xl p-3">
+            <Ticket size={28} className="text-primary" />
+          </div>
+        </div>
+
+        {/* Deadline */}
+        <div className="bg-accent-light border-t border-amber-200 px-6 py-3 flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+          <p className="text-amber-700 text-sm font-medium">
+            Prazo para emissão: até <strong>10 de março de 2025</strong>
+          </p>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <button
+        onClick={() => navigate('/emitir/quantidade')}
+        className="btn-primary flex items-center justify-center gap-2 mb-3"
+      >
+        <Ticket size={17} />
+        Gerar meus ingressos
+        <ChevronRight size={16} />
+      </button>
+
+      <button
+        onClick={() => navigate('/meus-pedidos')}
+        className="btn-secondary flex items-center justify-center gap-2"
+      >
+        <ClipboardList size={17} />
+        Ver meus pedidos
+      </button>
+
+      {/* Info */}
+      <div className="mt-6 bg-primary-light rounded-card p-4">
+        <p className="text-primary text-sm font-semibold mb-1">Como funciona?</p>
+        <ul className="text-sm text-primary/70 space-y-1 list-disc list-inside">
+          <li>Escolha quantos ingressos deseja emitir (até o seu limite)</li>
+          <li>Preencha os dados de cada participante</li>
+          <li>Aceite os termos e informe sobre o transporte</li>
+          <li>Retire seu kit impresso no RH antes do evento</li>
+        </ul>
+      </div>
+    </EmployeeLayout>
+  )
+}

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export NVM_DIR=\"$HOME/.nvm\")",
+      "Bash(source \"$NVM_DIR/nvm.sh\")",
+      "Bash(nvm use:*)",
+      "Bash(node_modules/.bin/tailwindcss -i src/index.css -o src/generated.css)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(/Users/felipe/.nvm/versions/node/v24.14.0/bin/npm install:*)",
+      "Bash(source ~/.nvm/nvm.sh)",
+      "Bash(npm install:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
