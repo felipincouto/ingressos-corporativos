@@ -8,11 +8,13 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).end()
 
   const sql = getDb()
-  const [[total_func], [emitiram], [total_ing], [onibus], setores] = await Promise.all([
+  const [[total_func], [emitiram], [total_ing], [onibus], [checkins], [retiradas], setores] = await Promise.all([
     sql`SELECT COUNT(*) AS n FROM funcionarios WHERE max_ingressos > 0`,
     sql`SELECT COUNT(DISTINCT funcionario_id) AS n FROM pedidos`,
     sql`SELECT COUNT(*) AS n FROM ingressos`,
     sql`SELECT COUNT(*) AS n FROM pedidos WHERE transporte = true`,
+    sql`SELECT COUNT(*) AS n FROM ingressos WHERE status = 'usado'`,
+    sql`SELECT COUNT(*) AS n FROM pedidos WHERE status = 'retirado'`,
     sql`
       SELECT f.setor,
              COUNT(DISTINCT p.funcionario_id) AS emitiram,
@@ -30,6 +32,8 @@ export default async function handler(req, res) {
     emitiram: Number(emitiram.n),
     total_ingressos: Number(total_ing.n),
     onibus: Number(onibus.n),
+    checkins: Number(checkins.n),
+    retiradas: Number(retiradas.n),
     setores,
   })
 }
