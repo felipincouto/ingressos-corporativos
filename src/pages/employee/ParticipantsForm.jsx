@@ -6,7 +6,7 @@ import { useApp } from '../../context/AppContext'
 
 const VINCULOS = ['Cônjuge', 'Filho/a', 'Acompanhante']
 
-function ParticipantCard({ index, data, onChange }) {
+function ParticipantCard({ index, data, onChange, isTitularLocked }) {
   const [open, setOpen] = useState(true)
   const isTitular = index === 0
   const hasName = data.name.trim().length > 0
@@ -37,31 +37,25 @@ function ParticipantCard({ index, data, onChange }) {
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Nome completo *</label>
             <input
-              className="input"
+              className={`input ${isTitular && isTitularLocked ? 'bg-slate-50 text-slate-500 cursor-not-allowed' : ''}`}
               placeholder="Nome completo"
               value={data.name}
-              onChange={e => onChange({ ...data, name: e.target.value })}
+              readOnly={isTitular && isTitularLocked}
+              onChange={e => !isTitularLocked && onChange({ ...data, name: e.target.value })}
             />
+            {isTitular && isTitularLocked && (
+              <p className="text-xs text-muted mt-1">Preenchido automaticamente com seus dados cadastrais.</p>
+            )}
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Data de nascimento</label>
-              <input
-                type="date"
-                className="input"
-                value={data.dob}
-                onChange={e => onChange({ ...data, dob: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">CPF (opcional)</label>
-              <input
-                className="input"
-                placeholder="000.000.000-00"
-                value={data.cpf}
-                onChange={e => onChange({ ...data, cpf: e.target.value })}
-              />
-            </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Data de nascimento</label>
+            <input
+              type="date"
+              className={`input ${isTitular && isTitularLocked && data.dob ? 'bg-slate-50 text-slate-500 cursor-not-allowed' : ''}`}
+              value={data.dob}
+              readOnly={isTitular && isTitularLocked && !!data.dob}
+              onChange={e => onChange({ ...data, dob: e.target.value })}
+            />
           </div>
           {!isTitular && (
             <div>
@@ -89,7 +83,7 @@ function ParticipantCard({ index, data, onChange }) {
   )
 }
 
-const emptyParticipant = () => ({ name: '', dob: '', cpf: '', vinculo: '' })
+const emptyParticipant = () => ({ name: '', dob: '', vinculo: '' })
 
 export default function ParticipantsForm() {
   const navigate = useNavigate()
@@ -99,8 +93,15 @@ export default function ParticipantsForm() {
   const [participants, setParticipants] = useState(() => {
     if (orderDraft.participants?.length === count) return orderDraft.participants
     const list = Array.from({ length: count }, emptyParticipant)
-    // Pre-fill titular with user name
-    if (user?.nome) list[0] = { ...list[0], name: user.nome, vinculo: 'Titular' }
+    // Auto-fill titular with user data
+    if (user?.nome) {
+      list[0] = {
+        ...list[0],
+        name: user.nome,
+        dob: user.data_nascimento || '',
+        vinculo: 'Titular',
+      }
+    }
     return list
   })
   const [touched, setTouched] = useState(false)
@@ -133,6 +134,7 @@ export default function ParticipantsForm() {
           index={i}
           data={p}
           onChange={data => handleUpdate(i, data)}
+          isTitularLocked={!!user?.nome}
         />
       ))}
 

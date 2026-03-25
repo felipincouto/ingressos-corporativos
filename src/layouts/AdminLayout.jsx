@@ -1,7 +1,7 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Upload, List, Printer, PackageCheck,
-  QrCode, BarChart3, LogOut, Ticket
+  QrCode, BarChart3, LogOut, Ticket, Trophy
 } from 'lucide-react'
 import clsx from 'clsx'
 
@@ -13,6 +13,7 @@ const NAV = [
   { to: '/admin/retirada',   label: 'Retirada',     icon: PackageCheck },
   { to: '/admin/checkin',    label: 'Check-in',     icon: QrCode },
   { to: '/admin/relatorios', label: 'Relatórios',   icon: BarChart3 },
+  { to: '/admin/sorteio',    label: 'Sorteio',       icon: Trophy },
 ]
 
 export default function AdminLayout() {

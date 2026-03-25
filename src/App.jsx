@@ -17,6 +17,8 @@ import PrintCenter from './pages/admin/PrintCenter'
 import PickupControl from './pages/admin/PickupControl'
 import CheckIn from './pages/admin/CheckIn'
 import Reports from './pages/admin/Reports'
+import Sorteio from './pages/admin/Sorteio'
+import TicketViewer from './pages/employee/TicketViewer'
 
 // Layouts
 import AdminLayout from './layouts/AdminLayout'
@@ -32,6 +34,7 @@ export default function App() {
       <Route path="/emitir/termos" element={<TermsPage />} />
       <Route path="/emitir/confirmacao" element={<OrderConfirmation />} />
       <Route path="/meus-pedidos" element={<MyOrders />} />
+      <Route path="/ingressos/:pedidoId" element={<TicketViewer />} />
 
       {/* Admin flow */}
       <Route path="/admin" element={<AdminLayout />}>
@@ -43,6 +46,7 @@ export default function App() {
         <Route path="retirada" element={<PickupControl />} />
         <Route path="checkin" element={<CheckIn />} />
         <Route path="relatorios" element={<Reports />} />
+        <Route path="sorteio" element={<Sorteio />} />
       </Route>
     </Routes>
   )

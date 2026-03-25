@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     if (!funcionario_id) return res.status(400).json({ error: 'funcionario_id obrigatório' })
 
     const pedidos = await sql`
-      SELECT p.*,
+      SELECT p.id, p.codigo, p.funcionario_id, p.transporte, p.status, p.criado_em, p.codigo_sorteio,
         json_agg(
           json_build_object(
             'id', part.id, 'nome', part.nome, 'vinculo', part.vinculo,
@@ -79,7 +79,13 @@ export default async function handler(req, res) {
       ingressos.push(ing.codigo)
     }
 
-    return res.status(201).json({ pedido, ingressos })
+    // Generate raffle code for the pedido
+    const [pedidoWithCode] = await sql`
+      UPDATE pedidos SET codigo_sorteio = gerar_codigo_sorteio() WHERE id = ${pedido.id} RETURNING codigo_sorteio
+    `
+    const codigo_sorteio = pedidoWithCode?.codigo_sorteio || null
+
+    return res.status(201).json({ pedido: { ...pedido, codigo_sorteio }, ingressos })
   }
 
   return res.status(405).json({ error: 'Method not allowed' })
