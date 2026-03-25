@@ -22,7 +22,13 @@
       "Bash(gh --version)",
       "Bash(git --version)",
       "Bash(brew install:*)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(vercel link:*)",
+      "Bash(vercel git:*)",
+      "Bash(open -a \"Visual Studio Code\" /Users/felipe/Downloads/denso)",
+      "Bash(open -a \"Code\" /Users/felipe/Downloads/denso)",
+      "Bash(git push:*)"
     ]
   }
 }
