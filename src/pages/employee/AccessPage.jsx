@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Ticket, Mail, Calendar, AlertCircle } from 'lucide-react'
+import { useApp } from '../../context/AppContext'
 
 export default function AccessPage() {
   const navigate = useNavigate()
+  const { login } = useApp()
   const [form, setForm] = useState({ email: '', nascimento: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     setError('')
     if (!form.email || !form.nascimento) {
@@ -16,20 +18,22 @@ export default function AccessPage() {
       return
     }
     setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
+    try {
+      await login(form.email, form.nascimento)
       navigate('/evento')
-    }, 1000)
+    } catch (err) {
+      setError(err.message || 'E-mail ou data de nascimento incorretos.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="min-h-screen flex flex-col" style={{
       background: 'linear-gradient(160deg, #1E3A5F 0%, #2D6A9F 45%, #F8FAFC 45%)'
     }}>
-      {/* Header area */}
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-sm">
-          {/* Logo */}
           <div className="flex flex-col items-center mb-8">
             <div className="bg-accent rounded-2xl p-3 mb-3 shadow-card-md">
               <Ticket size={28} className="text-white" />
@@ -38,7 +42,6 @@ export default function AccessPage() {
             <p className="text-white/60 text-sm mt-1">Portal do Colaborador</p>
           </div>
 
-          {/* Card */}
           <div className="card shadow-card-md">
             <h2 className="text-lg font-bold text-primary mb-1">Acesse sua conta</h2>
             <p className="text-muted text-sm mb-6">
@@ -46,7 +49,6 @@ export default function AccessPage() {
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* E-mail */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">
                   E-mail corporativo
@@ -63,7 +65,6 @@ export default function AccessPage() {
                 </div>
               </div>
 
-              {/* Data de nascimento */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">
                   Data de nascimento
@@ -79,7 +80,6 @@ export default function AccessPage() {
                 </div>
               </div>
 
-              {/* Error */}
               {error && (
                 <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-3 py-2.5">
                   <AlertCircle size={15} className="text-danger shrink-0" />
@@ -92,9 +92,9 @@ export default function AccessPage() {
                 disabled={loading}
                 className="btn-primary mt-2 flex items-center justify-center gap-2"
               >
-                {loading ? (
+                {loading && (
                   <span className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                ) : null}
+                )}
                 {loading ? 'Verificando...' : 'Acessar meus ingressos'}
               </button>
             </form>
@@ -104,7 +104,6 @@ export default function AccessPage() {
             </p>
           </div>
 
-          {/* Admin link */}
           <p className="text-center mt-4">
             <button
               onClick={() => navigate('/admin/dashboard')}

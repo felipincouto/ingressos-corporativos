@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Dev Server (Vite)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "/Users/felipe/.nvm/versions/node/v24.14.0/bin/node",
+      "runtimeArgs": ["/Users/felipe/Downloads/denso/node_modules/.bin/vite"],
+      "cwd": "/Users/felipe/Downloads/denso",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  ]
+}

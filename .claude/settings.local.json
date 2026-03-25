@@ -11,7 +11,18 @@
       "Bash(npm install:*)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(vercel --version)",
+      "Bash(vercel whoami:*)",
+      "Bash(vercel --yes --name ingressos-corporativos)",
+      "Bash(vercel env:*)",
+      "Bash(vercel --prod --yes)",
+      "Bash(npm run:*)",
+      "Bash(curl -s -X POST https://ingressos-corporativos.vercel.app/api/auth -H \"Content-Type: application/json\" -d '{\"\"email\"\":\"\"felipincouto@gmail.com\"\",\"\"data_nascimento\"\":\"\"1996-05-03\"\"}')",
+      "Bash(gh --version)",
+      "Bash(git --version)",
+      "Bash(brew install:*)",
+      "Bash(gh auth:*)"
     ]
   }
 }

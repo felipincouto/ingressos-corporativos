@@ -2,25 +2,31 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Info } from 'lucide-react'
 import EmployeeLayout from '../../layouts/EmployeeLayout'
-
-const MAX = 5
+import { useApp } from '../../context/AppContext'
 
 export default function SelectQuantity() {
   const navigate = useNavigate()
+  const { user, setOrderDraft } = useApp()
+  const max = user?.max_ingressos || 5
   const [selected, setSelected] = useState(null)
+
+  function handleContinue() {
+    if (!selected) return
+    setOrderDraft({ quantity: selected, participants: [], transport: null })
+    navigate('/emitir/participantes')
+  }
 
   return (
     <EmployeeLayout step={1}>
       <h2 className="text-primary mb-1">Quantos ingressos?</h2>
       <p className="text-muted text-sm mb-6">
-        Você tem direito a até <strong className="text-primary">{MAX} ingressos</strong> para este evento.
+        Você tem direito a até <strong className="text-primary">{max} ingressos</strong> para este evento.
       </p>
 
-      {/* Selector */}
       <div className="card mb-4">
         <p className="text-sm font-medium text-slate-700 mb-3">Selecione a quantidade:</p>
         <div className="flex gap-3 flex-wrap">
-          {Array.from({ length: MAX }, (_, i) => i + 1).map(n => (
+          {Array.from({ length: max }, (_, i) => i + 1).map(n => (
             <button
               key={n}
               onClick={() => setSelected(n)}
@@ -44,7 +50,6 @@ export default function SelectQuantity() {
         )}
       </div>
 
-      {/* Info box */}
       <div className="flex gap-2.5 bg-primary-light rounded-card p-4 mb-6">
         <Info size={16} className="text-primary shrink-0 mt-0.5" />
         <p className="text-sm text-primary/70">
@@ -53,13 +58,12 @@ export default function SelectQuantity() {
         </p>
       </div>
 
-      {/* Navigation */}
       <div className="flex gap-3">
         <button onClick={() => navigate('/evento')} className="btn-secondary w-auto px-5">
           ← Voltar
         </button>
         <button
-          onClick={() => navigate('/emitir/participantes')}
+          onClick={handleContinue}
           disabled={!selected}
           className={`flex-1 font-semibold py-3 rounded-card transition-all duration-150
             ${selected

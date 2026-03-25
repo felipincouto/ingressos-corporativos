@@ -2,20 +2,27 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Bus, Shield, AlertTriangle } from 'lucide-react'
 import EmployeeLayout from '../../layouts/EmployeeLayout'
+import { useApp } from '../../context/AppContext'
 
 export default function TermsPage() {
   const navigate = useNavigate()
+  const { setOrderDraft } = useApp()
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [transport, setTransport] = useState(null)
 
   const canContinue = acceptedTerms && transport !== null
+
+  function handleContinue() {
+    if (!canContinue) return
+    setOrderDraft({ transport })
+    navigate('/emitir/confirmacao')
+  }
 
   return (
     <EmployeeLayout step={3}>
       <h2 className="text-primary mb-1">Termos e transporte</h2>
       <p className="text-muted text-sm mb-5">Leia os termos abaixo e informe sua opção de transporte.</p>
 
-      {/* Term 1 */}
       <div className="card mb-4">
         <div className="flex items-center gap-2 mb-3">
           <Shield size={16} className="text-primary" />
@@ -31,7 +38,6 @@ export default function TermsPage() {
             o direito de negar a entrada a qualquer participante que descumpra as regras estabelecidas.
           </p>
         </div>
-
         <label className="flex items-start gap-3 cursor-pointer group">
           <input
             type="checkbox"
@@ -45,7 +51,6 @@ export default function TermsPage() {
         </label>
       </div>
 
-      {/* Term 2 — Transport */}
       <div className="card mb-5">
         <div className="flex items-center gap-2 mb-3">
           <Bus size={16} className="text-primary" />
@@ -55,8 +60,7 @@ export default function TermsPage() {
           <p>
             A empresa disponibilizará ônibus fretados saindo dos pontos definidos pelo RH. O transporte é
             gratuito e a empresa recomenda fortemente sua utilização. Caso opte por não utilizar o ônibus,
-            o colaborador assume total responsabilidade pelo deslocamento ao local do evento. Informar corretamente
-            sua opção é fundamental para o planejamento da frota.
+            o colaborador assume total responsabilidade pelo deslocamento ao local do evento.
           </p>
         </div>
 
@@ -89,19 +93,18 @@ export default function TermsPage() {
           <div className="flex gap-2 mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
             <AlertTriangle size={15} className="text-accent shrink-0 mt-0.5" />
             <p className="text-xs text-amber-700">
-              Você optou por não utilizar o ônibus. Você será responsável pelo seu deslocamento até o evento.
+              Você optou por não utilizar o ônibus. Você será responsável pelo seu deslocamento.
             </p>
           </div>
         )}
       </div>
 
-      {/* Navigation */}
       <div className="flex gap-3">
         <button onClick={() => navigate('/emitir/participantes')} className="btn-secondary w-auto px-5">
           ← Voltar
         </button>
         <button
-          onClick={() => navigate('/emitir/confirmacao')}
+          onClick={handleContinue}
           disabled={!canContinue}
           className={`flex-1 font-semibold py-3 rounded-card transition-all duration-150
             ${canContinue

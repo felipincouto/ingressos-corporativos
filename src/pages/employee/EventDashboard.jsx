@@ -1,21 +1,29 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MapPin, Calendar, Ticket, ChevronRight, ClipboardList } from 'lucide-react'
 import EmployeeLayout from '../../layouts/EmployeeLayout'
+import { useApp } from '../../context/AppContext'
 
 export default function EventDashboard() {
   const navigate = useNavigate()
+  const { user } = useApp()
+
+  // Proteção de rota
+  useEffect(() => {
+    if (!user) navigate('/', { replace: true })
+  }, [user])
+
+  if (!user) return null
 
   return (
     <EmployeeLayout showSteps={false}>
-      {/* Greeting */}
       <div className="mb-4">
         <p className="text-muted text-sm">Bem-vindo,</p>
-        <h1 className="text-primary">João Silva</h1>
+        <h1 className="text-primary">{user.nome}</h1>
+        <p className="text-xs text-muted mt-0.5">{user.setor} · Matrícula {user.matricula || '—'}</p>
       </div>
 
-      {/* Event card */}
       <div className="rounded-card overflow-hidden shadow-card-md mb-5">
-        {/* Banner */}
         <div className="bg-gradient-to-r from-primary to-primary-medium p-6 pb-8 relative">
           <div className="absolute inset-0 opacity-10"
             style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
@@ -31,12 +39,11 @@ export default function EventDashboard() {
           </div>
         </div>
 
-        {/* Quota highlight */}
         <div className="bg-white px-6 py-5 flex items-center justify-between">
           <div>
             <p className="text-muted text-sm mb-0.5">Seus ingressos disponíveis</p>
             <div className="flex items-end gap-2">
-              <span className="text-5xl font-bold text-primary leading-none">5</span>
+              <span className="text-5xl font-bold text-primary leading-none">{user.max_ingressos}</span>
               <span className="text-muted text-sm mb-1">ingressos</span>
             </div>
           </div>
@@ -45,7 +52,6 @@ export default function EventDashboard() {
           </div>
         </div>
 
-        {/* Deadline */}
         <div className="bg-accent-light border-t border-amber-200 px-6 py-3 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
           <p className="text-amber-700 text-sm font-medium">
@@ -54,7 +60,6 @@ export default function EventDashboard() {
         </div>
       </div>
 
-      {/* Actions */}
       <button
         onClick={() => navigate('/emitir/quantidade')}
         className="btn-primary flex items-center justify-center gap-2 mb-3"
@@ -72,7 +77,6 @@ export default function EventDashboard() {
         Ver meus pedidos
       </button>
 
-      {/* Info */}
       <div className="mt-6 bg-primary-light rounded-card p-4">
         <p className="text-primary text-sm font-semibold mb-1">Como funciona?</p>
         <ul className="text-sm text-primary/70 space-y-1 list-disc list-inside">

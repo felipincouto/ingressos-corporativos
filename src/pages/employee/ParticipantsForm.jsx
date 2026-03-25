@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User, ChevronDown, ChevronUp } from 'lucide-react'
 import EmployeeLayout from '../../layouts/EmployeeLayout'
+import { useApp } from '../../context/AppContext'
 
 const VINCULOS = ['Cônjuge', 'Filho/a', 'Acompanhante']
-const COUNT = 3 // demo — should come from route state
 
 function ParticipantCard({ index, data, onChange }) {
   const [open, setOpen] = useState(true)
@@ -13,7 +13,6 @@ function ParticipantCard({ index, data, onChange }) {
 
   return (
     <div className={`card mb-3 overflow-hidden ${!hasName ? 'border border-red-200' : ''}`}>
-      {/* Header */}
       <button
         onClick={() => setOpen(o => !o)}
         className="flex items-center justify-between w-full"
@@ -25,9 +24,7 @@ function ParticipantCard({ index, data, onChange }) {
           <div className="text-left">
             <p className="text-sm font-semibold text-slate-800">
               {data.name.trim() || `Participante ${index + 1}`}
-              {isTitular && (
-                <span className="ml-2 badge-blue text-xs">Titular</span>
-              )}
+              {isTitular && <span className="ml-2 badge-blue text-xs">Titular</span>}
             </p>
             <p className="text-xs text-muted">{isTitular ? 'Você (funcionário)' : 'Dependente / Acompanhante'}</p>
           </div>
@@ -35,7 +32,6 @@ function ParticipantCard({ index, data, onChange }) {
         {open ? <ChevronUp size={16} className="text-muted" /> : <ChevronDown size={16} className="text-muted" />}
       </button>
 
-      {/* Fields */}
       {open && (
         <div className="mt-4 pt-4 border-t border-border space-y-3">
           <div>
@@ -97,16 +93,21 @@ const emptyParticipant = () => ({ name: '', dob: '', cpf: '', vinculo: '' })
 
 export default function ParticipantsForm() {
   const navigate = useNavigate()
-  const [participants, setParticipants] = useState(
-    Array.from({ length: COUNT }, emptyParticipant)
-  )
+  const { orderDraft, setOrderDraft, user } = useApp()
+  const count = orderDraft.quantity || 1
+
+  const [participants, setParticipants] = useState(() => {
+    if (orderDraft.participants?.length === count) return orderDraft.participants
+    const list = Array.from({ length: count }, emptyParticipant)
+    // Pre-fill titular with user name
+    if (user?.nome) list[0] = { ...list[0], name: user.nome, vinculo: 'Titular' }
+    return list
+  })
   const [touched, setTouched] = useState(false)
 
-  const allNamesFilledAndVinculos = participants.every((p, i) => {
-    const nameOk = p.name.trim().length > 0
-    const vinculoOk = i === 0 || p.vinculo !== ''
-    return nameOk && vinculoOk
-  })
+  const allValid = participants.every((p, i) =>
+    p.name.trim().length > 0 && (i === 0 || p.vinculo !== '')
+  )
 
   function handleUpdate(index, data) {
     setParticipants(prev => prev.map((p, i) => i === index ? data : p))
@@ -114,7 +115,9 @@ export default function ParticipantsForm() {
 
   function handleContinue() {
     setTouched(true)
-    if (allNamesFilledAndVinculos) navigate('/emitir/termos')
+    if (!allValid) return
+    setOrderDraft({ participants })
+    navigate('/emitir/termos')
   }
 
   return (
@@ -133,7 +136,7 @@ export default function ParticipantsForm() {
         />
       ))}
 
-      {touched && !allNamesFilledAndVinculos && (
+      {touched && !allValid && (
         <p className="text-xs text-danger mb-3">
           Preencha o nome e o vínculo de todos os participantes para continuar.
         </p>
@@ -146,7 +149,7 @@ export default function ParticipantsForm() {
         <button
           onClick={handleContinue}
           className={`flex-1 font-semibold py-3 rounded-card transition-all duration-150
-            ${allNamesFilledAndVinculos
+            ${allValid
               ? 'bg-accent text-white hover:bg-amber-500'
               : 'bg-border text-muted cursor-not-allowed'
             }`}

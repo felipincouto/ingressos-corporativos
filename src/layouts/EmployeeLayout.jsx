@@ -1,11 +1,18 @@
 import { useNavigate } from 'react-router-dom'
 import { Ticket, LogOut } from 'lucide-react'
 import StepIndicator from '../components/StepIndicator'
+import { useApp } from '../context/AppContext'
 
 const STEPS = ['Quantidade', 'Participantes', 'Termos', 'Confirmação']
 
 export default function EmployeeLayout({ children, step, showSteps = true }) {
   const navigate = useNavigate()
+  const { logout } = useApp()
+
+  function handleLogout() {
+    logout()
+    navigate('/')
+  }
 
   return (
     <div className="min-h-screen bg-surface flex flex-col">
@@ -19,7 +26,7 @@ export default function EmployeeLayout({ children, step, showSteps = true }) {
             <span className="font-bold text-primary text-sm">Ingressos Corporativos</span>
           </div>
           <button
-            onClick={() => navigate('/')}
+            onClick={handleLogout}
             className="flex items-center gap-1.5 text-muted hover:text-primary text-xs font-medium transition-colors"
           >
             <LogOut size={14} />
