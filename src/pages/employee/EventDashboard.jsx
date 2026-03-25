@@ -52,9 +52,9 @@ export default function EventDashboard() {
           </div>
         </div>
 
-        <div className="bg-accent-light border-t border-amber-200 px-6 py-3 flex items-center gap-2">
+        <div className="bg-accent-light border-t border-red-200 px-6 py-3 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-          <p className="text-amber-700 text-sm font-medium">
+          <p className="text-accent text-sm font-medium">
             Prazo para emissão: até <strong>{evento?.prazo_emissao ? new Date(evento.prazo_emissao + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'}) : ''}</strong>
           </p>
         </div>

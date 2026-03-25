@@ -109,9 +109,9 @@ export default function OrderConfirmation() {
         </div>
       </div>
 
-      <div className="flex gap-2.5 bg-amber-50 border border-amber-200 rounded-card p-4 mb-5">
+      <div className="flex gap-2.5 bg-red-50 border border-red-200 rounded-card p-4 mb-5">
         <AlertTriangle size={16} className="text-accent shrink-0 mt-0.5" />
-        <p className="text-sm text-amber-700">
+        <p className="text-sm text-accent">
           Após confirmar, <strong>não será possível alterar</strong> os dados do pedido.
         </p>
       </div>

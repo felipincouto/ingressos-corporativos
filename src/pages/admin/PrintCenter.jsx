@@ -139,7 +139,7 @@ export default function PrintCenter() {
             <button
               onClick={handlePrint}
               disabled={printing}
-              className="bg-accent hover:bg-amber-500 text-white font-semibold px-4 py-2 rounded-xl text-sm flex items-center gap-2 transition-colors disabled:opacity-60"
+              className="bg-accent text-white font-semibold px-4 py-2 rounded-xl text-sm flex items-center gap-2 transition-colors disabled:opacity-60"
             >
               {printing ? <Loader size={15} className="animate-spin" /> : <Printer size={15} />}
               {printing ? 'Processando...' : 'Imprimir lote'}

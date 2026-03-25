@@ -58,7 +58,11 @@
       "Bash(sed -i '' 's/width: 110,/width: 88,/' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
       "Bash(sed -i '' \"s/height: 140,/height: 120,/\" /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
       "Bash(sed -i '' \"s/fontSize: 80,/fontSize: 64,/\" /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
-      "Bash(sed -i '' \"s/flex: ''0 0 380px'',/flex: ''0 0 430px'',/\" /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)"
+      "Bash(sed -i '' \"s/flex: ''0 0 380px'',/flex: ''0 0 430px'',/\" /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(ls /Users/felipe/Downloads/denso/src/*.css)",
+      "Bash(/Users/felipe/.nvm/versions/node/v24.14.0/bin/npx tailwindcss:*)",
+      "Bash(/Users/felipe/.nvm/versions/node/v24.14.0/bin/node /Users/felipe/.nvm/versions/node/v24.14.0/bin/npx tailwindcss -i src/index.css -o src/generated.css)",
+      "Bash(PATH=\"/Users/felipe/.nvm/versions/node/v24.14.0/bin:$PATH\" npx tailwindcss -i src/index.css -o src/generated.css)"
     ]
   }
 }

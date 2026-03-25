@@ -90,9 +90,9 @@ export default function TermsPage() {
         </div>
 
         {transport === false && (
-          <div className="flex gap-2 mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <div className="flex gap-2 mt-3 bg-red-50 border border-red-200 rounded-lg p-3">
             <AlertTriangle size={15} className="text-accent shrink-0 mt-0.5" />
-            <p className="text-xs text-amber-700">
+            <p className="text-xs text-accent">
               Você optou por não utilizar o ônibus. Você será responsável pelo seu deslocamento.
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function TermsPage() {
           disabled={!canContinue}
           className={`flex-1 font-semibold py-3 rounded-card transition-all duration-150
             ${canContinue
-              ? 'bg-accent text-white hover:bg-amber-500'
+              ? 'bg-accent text-white'
               : 'bg-border text-muted cursor-not-allowed'
             }`}
         >

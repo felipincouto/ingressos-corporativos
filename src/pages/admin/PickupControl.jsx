@@ -46,7 +46,7 @@ export default function PickupControl() {
       <div className="p-6 space-y-5 max-w-3xl">
         <div className="grid grid-cols-2 gap-4">
           <div className="card flex items-center gap-3">
-            <div className="bg-amber-50 rounded-xl p-2.5">
+            <div className="bg-red-50 rounded-xl p-2.5">
               <Clock size={18} className="text-accent" />
             </div>
             <div>
@@ -92,7 +92,7 @@ export default function PickupControl() {
                 <div key={o.id} className={`card transition-all ${retirado ? 'opacity-70' : ''}`}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-3">
-                      <div className={`rounded-xl p-2 mt-0.5 ${retirado ? 'bg-green-50' : 'bg-amber-50'}`}>
+                      <div className={`rounded-xl p-2 mt-0.5 ${retirado ? 'bg-green-50' : 'bg-red-50'}`}>
                         <Package size={16} className={retirado ? 'text-success' : 'text-accent'} />
                       </div>
                       <div>

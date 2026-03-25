@@ -152,7 +152,7 @@ export default function ParticipantsForm() {
           onClick={handleContinue}
           className={`flex-1 font-semibold py-3 rounded-card transition-all duration-150
             ${allValid
-              ? 'bg-accent text-white hover:bg-amber-500'
+              ? 'bg-accent text-white'
               : 'bg-border text-muted cursor-not-allowed'
             }`}
         >

@@ -83,7 +83,7 @@ export default function AdminDashboard() {
               <p className="text-xs text-muted">{emitiram} de {total} funcionários realizaram a emissão</p>
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border">
                 <Clock size={14} className="text-accent" />
-                <p className="text-sm text-amber-700 font-medium">
+                <p className="text-sm text-accent font-medium">
                   {evento?.prazo_emissao
                     ? <>Prazo de emissão: até <strong>{new Date(evento.prazo_emissao + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'})}</strong></>
                     : 'Prazo de emissão não definido'

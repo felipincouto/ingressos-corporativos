@@ -92,7 +92,7 @@ export default function CheckIn() {
           <div className={`card border-2 transition-all ${
             result.resultado === 'valido'    ? 'border-success bg-green-50' :
             result.resultado === 'duplicado' ? 'border-danger bg-red-50' :
-                                               'border-accent bg-amber-50'
+                                               'border-accent bg-red-50'
           }`}>
             {result.resultado === 'valido' && (
               <div className="flex items-start gap-3">
@@ -121,7 +121,7 @@ export default function CheckIn() {
               <div className="flex items-start gap-3">
                 <AlertTriangle size={24} className="text-accent shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-bold text-amber-700 text-lg">INGRESSO INVÁLIDO ⚠</p>
+                  <p className="font-bold text-accent text-lg">INGRESSO INVÁLIDO ⚠</p>
                   <p className="text-sm text-muted">Código não encontrado no sistema.</p>
                 </div>
               </div>
@@ -130,7 +130,7 @@ export default function CheckIn() {
               <div className="flex items-start gap-3">
                 <AlertTriangle size={24} className="text-accent shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-bold text-amber-700 text-lg">ERRO DE CONEXÃO</p>
+                  <p className="font-bold text-accent text-lg">ERRO DE CONEXÃO</p>
                   <p className="text-sm text-muted">Não foi possível validar o ingresso.</p>
                 </div>
               </div>

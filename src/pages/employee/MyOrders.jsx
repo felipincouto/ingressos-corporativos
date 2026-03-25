@@ -84,7 +84,7 @@ function OrderCard({ pedido }) {
           <div className="card border-2 border-dashed border-accent/40 bg-accent-light">
             <div className="flex items-center gap-2 mb-3">
               <Trophy size={16} className="text-accent" />
-              <h3 className="text-amber-700">Cupom de Sorteio — Titular</h3>
+              <h3 className="text-accent">Cupom de Sorteio — Titular</h3>
             </div>
             <div className="flex items-center gap-4">
               <QRPlaceholder code="SORT" />

@@ -67,7 +67,7 @@ export default function SelectQuantity() {
           disabled={!selected}
           className={`flex-1 font-semibold py-3 rounded-card transition-all duration-150
             ${selected
-              ? 'bg-accent text-white hover:bg-amber-500'
+              ? 'bg-accent text-white'
               : 'bg-border text-muted cursor-not-allowed'
             }`}
         >
