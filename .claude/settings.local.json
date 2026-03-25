@@ -45,7 +45,20 @@
       "Bash(sed -i '' 's/.btn-primary:hover { background: #D97706; }/.btn-primary:hover { background: #B8002A; }/g' index.html)",
       "Bash(sed -i '' 's/.text-accent { color: #F59E0B; }/.text-accent { color: #DC0032; }/g' index.html)",
       "Bash(sed -i '' 's/.bg-accent { background-color: #F59E0B; }/.bg-accent { background-color: #DC0032; }/g' index.html)",
-      "Bash(sed -i '' 's/.border-accent { border-color: #F59E0B; }/.border-accent { border-color: #DC0032; }/g' index.html)"
+      "Bash(sed -i '' 's/.border-accent { border-color: #F59E0B; }/.border-accent { border-color: #DC0032; }/g' index.html)",
+      "Bash(find /Users/felipe/Downloads/denso/src -type f \\\\\\(-name *.jsx -o -name *.js \\\\\\))",
+      "Bash(find /Users/felipe/Downloads/denso/api -type f -name *.js)",
+      "Bash(sed -i '' 's/step === 3$/step === 4/' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' 's/Código de 3 dígitos/Código de 4 dígitos/' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' 's/step >= 3$/step >= 4/g' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' 's/step >= 3 ? /step >= 4 ? /g' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' 's/step >= 3 ||/step >= 4 ||/g' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' '245s/step === 4/step === 3/' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -n '244,248p' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' 's/width: 110,/width: 88,/' /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' \"s/height: 140,/height: 120,/\" /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' \"s/fontSize: 80,/fontSize: 64,/\" /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)",
+      "Bash(sed -i '' \"s/flex: ''0 0 380px'',/flex: ''0 0 430px'',/\" /Users/felipe/Downloads/denso/src/pages/admin/Sorteio.jsx)"
     ]
   }
 }

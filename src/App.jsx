@@ -20,6 +20,7 @@ import PickupControl from './pages/admin/PickupControl'
 import CheckIn from './pages/admin/CheckIn'
 import Reports from './pages/admin/Reports'
 import Sorteio from './pages/admin/Sorteio'
+import Funcionarios from './pages/admin/Funcionarios'
 import TicketViewer from './pages/employee/TicketViewer'
 
 // Layouts
@@ -45,6 +46,7 @@ export default function App() {
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="funcionarios" element={<Funcionarios />} />
         <Route path="importacao" element={<ImportPage />} />
         <Route path="pedidos" element={<OrdersList />} />
         <Route path="impressao" element={<PrintCenter />} />

@@ -25,8 +25,8 @@ function DigitSlot({ digit, revealed, spinning }) {
 
   return (
     <div style={{
-      width: 110,
-      height: 140,
+      width: 88,
+      height: 120,
       borderRadius: 16,
       background: revealed
         ? 'linear-gradient(160deg, #F59E0B, #D97706)'
@@ -54,7 +54,7 @@ function DigitSlot({ digit, revealed, spinning }) {
         }} />
       )}
       <span style={{
-        fontSize: 80,
+        fontSize: 64,
         fontWeight: 900,
         fontFamily: 'monospace',
         color: revealed ? '#FFFFFF' : spinning ? '#64748B' : '#334155',
@@ -141,7 +141,7 @@ export default function Sorteio() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  // step: 0 = not started, 1 = first digit revealed, 2 = two digits, 3 = all three
+  // step: 0 = not started, 1..3 = digits revealed progressively, 4 = all four revealed
   const [step, setStep] = useState(0)
   const [spinning, setSpinning] = useState(false)
   const [revealedCode, setRevealedCode] = useState(null) // the winning 3-digit code
@@ -184,7 +184,7 @@ export default function Sorteio() {
       startSorteio()
       return
     }
-    if (step >= 3) return
+    if (step >= 4) return
 
     setSpinning(true)
     setTimeout(() => {
@@ -192,7 +192,7 @@ export default function Sorteio() {
       setStep(nextStep)
       setSpinning(false)
 
-      if (nextStep === 3) {
+      if (nextStep === 4) {
         // Find winner in participantes
         const w = participantes.find(p => String(p.codigo_sorteio) === revealedCode)
         setWinner(w || null)
@@ -232,7 +232,7 @@ export default function Sorteio() {
     )
   })
 
-  const digits = revealedCode ? revealedCode.split('') : ['?', '?', '?']
+  const digits = revealedCode ? revealedCode.split('') : ['?', '?', '?', '?']
 
   const buttonLabel = !revealedCode
     ? 'Iniciar Sorteio'
@@ -242,7 +242,9 @@ export default function Sorteio() {
         ? 'Revelar 2º Dígito'
         : step === 2
           ? 'Revelar 3º Dígito'
-          : '🏆 Sorteio Concluído'
+          : step === 3
+            ? 'Revelar 4º Dígito'
+            : '🏆 Sorteio Concluído'
 
   return (
     <div style={{
@@ -270,7 +272,7 @@ export default function Sorteio() {
           <div>
             <div style={{ color: '#F1F5F9', fontWeight: 800, fontSize: 18 }}>Sorteio {evento?.nome || 'COPERNIC 2026'}</div>
             <div style={{ color: '#64748B', fontSize: 13 }}>
-              {participantes.length} participantes · Código de 3 dígitos
+              {participantes.length} participantes · Código de 4 dígitos
             </div>
           </div>
         </div>
@@ -303,7 +305,7 @@ export default function Sorteio() {
 
           {/* Left: Slot machine */}
           <div style={{
-            flex: '0 0 380px',
+            flex: '0 0 430px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -328,8 +330,8 @@ export default function Sorteio() {
               <div style={{ color: '#475569', fontSize: 11, fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase', textAlign: 'center', marginBottom: 16 }}>
                 Código do Sorteio
               </div>
-              <div style={{ display: 'flex', gap: 12 }}>
-                {[0, 1, 2].map(i => (
+              <div style={{ display: 'flex', gap: 10 }}>
+                {[0, 1, 2, 3].map(i => (
                   <DigitSlot
                     key={i}
                     digit={revealedCode ? digits[i] : null}
@@ -340,7 +342,7 @@ export default function Sorteio() {
               </div>
               {/* Step indicators */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 16 }}>
-                {[0, 1, 2].map(i => (
+                {[0, 1, 2, 3].map(i => (
                   <div key={i} style={{
                     width: step > i ? 28 : 8,
                     height: 8,
@@ -353,7 +355,7 @@ export default function Sorteio() {
             </div>
 
             {/* Winner reveal */}
-            {step === 3 && winner && (
+            {step === 4 && winner && (
               <div style={{
                 background: 'linear-gradient(135deg, rgba(245,158,11,0.15), rgba(217,119,6,0.1))',
                 border: '2px solid #F59E0B',
@@ -389,7 +391,7 @@ export default function Sorteio() {
               </div>
             )}
 
-            {step === 3 && !winner && revealedCode && (
+            {step === 4 && !winner && revealedCode && (
               <div style={{
                 color: '#EF4444', fontSize: 13, textAlign: 'center',
                 background: '#1E293B', borderRadius: 12, padding: '12px 20px',
@@ -403,26 +405,26 @@ export default function Sorteio() {
             {/* CTA Button */}
             <button
               onClick={revealNext}
-              disabled={spinning || step >= 3}
+              disabled={spinning || step >= 4}
               style={{
                 width: '100%',
                 padding: '16px',
                 borderRadius: 14,
-                background: step >= 3
+                background: step >= 4
                   ? '#1E293B'
                   : spinning
                     ? '#334155'
                     : 'linear-gradient(135deg, #F59E0B, #D97706)',
-                color: step >= 3 ? '#64748B' : '#FFFFFF',
+                color: step >= 4 ? '#64748B' : '#FFFFFF',
                 border: 'none',
-                cursor: step >= 3 || spinning ? 'not-allowed' : 'pointer',
+                cursor: step >= 4 || spinning ? 'not-allowed' : 'pointer',
                 fontSize: 16,
                 fontWeight: 800,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 10,
-                boxShadow: step >= 3 ? 'none' : '0 4px 20px rgba(245,158,11,0.35)',
+                boxShadow: step >= 4 ? 'none' : '0 4px 20px rgba(245,158,11,0.35)',
                 transition: 'all 0.2s',
                 letterSpacing: 0.5,
               }}
@@ -440,7 +442,7 @@ export default function Sorteio() {
                 </>
               ) : (
                 <>
-                  {step < 3 && <Zap size={18} />}
+                  {step < 4 && <Zap size={18} />}
                   {buttonLabel}
                 </>
               )}
@@ -491,7 +493,7 @@ export default function Sorteio() {
               <div style={{ color: '#475569', fontSize: 12, marginTop: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
                 <Users size={12} />
                 {filtered.length} participante{filtered.length !== 1 ? 's' : ''} exibido{filtered.length !== 1 ? 's' : ''}
-                {step > 0 && step < 3 && (
+                {step > 0 && step < 4 && (
                   <span style={{ color: '#F59E0B', marginLeft: 4 }}>
                     · filtrado por {step} dígito{step > 1 ? 's' : ''}
                   </span>

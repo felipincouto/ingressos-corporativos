@@ -2,22 +2,23 @@ import { useEffect } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Upload, List, Printer, PackageCheck,
-  QrCode, BarChart3, LogOut, Trophy, CalendarDays
+  QrCode, BarChart3, LogOut, Trophy, CalendarDays, Users
 } from 'lucide-react'
 import clsx from 'clsx'
 import { useApp } from '../context/AppContext'
 import DensoLogo from '../components/DensoLogo'
 
 const NAV = [
-  { to: '/admin/dashboard',  label: 'Dashboard',   icon: LayoutDashboard },
-  { to: '/admin/importacao', label: 'Importação',   icon: Upload },
-  { to: '/admin/pedidos',    label: 'Pedidos',      icon: List },
-  { to: '/admin/impressao',  label: 'Impressão',    icon: Printer },
-  { to: '/admin/retirada',   label: 'Retirada',     icon: PackageCheck },
-  { to: '/admin/checkin',    label: 'Check-in',     icon: QrCode },
-  { to: '/admin/evento',     label: 'Eventos',      icon: CalendarDays },
-  { to: '/admin/relatorios', label: 'Relatórios',   icon: BarChart3 },
-  { to: '/admin/sorteio',    label: 'Sorteio',      icon: Trophy },
+  { to: '/admin/dashboard',      label: 'Dashboard',      icon: LayoutDashboard },
+  { to: '/admin/funcionarios',   label: 'Funcionários',   icon: Users },
+  { to: '/admin/importacao',     label: 'Importação',     icon: Upload },
+  { to: '/admin/pedidos',        label: 'Pedidos',        icon: List },
+  { to: '/admin/impressao',      label: 'Impressão',      icon: Printer },
+  { to: '/admin/retirada',       label: 'Retirada',       icon: PackageCheck },
+  { to: '/admin/checkin',        label: 'Check-in',       icon: QrCode },
+  { to: '/admin/evento',         label: 'Eventos',        icon: CalendarDays },
+  { to: '/admin/relatorios',     label: 'Relatórios',     icon: BarChart3 },
+  { to: '/admin/sorteio',        label: 'Sorteio',        icon: Trophy },
 ]
 
 export default function AdminLayout() {
