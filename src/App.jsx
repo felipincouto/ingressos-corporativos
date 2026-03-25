@@ -10,6 +10,8 @@ import OrderConfirmation from './pages/employee/OrderConfirmation'
 import MyOrders from './pages/employee/MyOrders'
 
 // Admin pages
+import AdminLogin from './pages/admin/AdminLogin'
+import EventoConfig from './pages/admin/EventoConfig'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import ImportPage from './pages/admin/ImportPage'
 import OrdersList from './pages/admin/OrdersList'
@@ -36,6 +38,9 @@ export default function App() {
       <Route path="/meus-pedidos" element={<MyOrders />} />
       <Route path="/ingressos/:pedidoId" element={<TicketViewer />} />
 
+      {/* Admin login */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+
       {/* Admin flow */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
@@ -45,6 +50,7 @@ export default function App() {
         <Route path="impressao" element={<PrintCenter />} />
         <Route path="retirada" element={<PickupControl />} />
         <Route path="checkin" element={<CheckIn />} />
+        <Route path="evento" element={<EventoConfig />} />
         <Route path="relatorios" element={<Reports />} />
         <Route path="sorteio" element={<Sorteio />} />
       </Route>

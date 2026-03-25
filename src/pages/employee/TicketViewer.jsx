@@ -8,7 +8,7 @@ import generateTicketsPDF from '../../utils/generateTicketsPDF'
 export default function TicketViewer() {
   const { pedidoId } = useParams()
   const navigate = useNavigate()
-  const { user } = useApp()
+  const { user, evento } = useApp()
 
   const [pedido, setPedido] = useState(null)
   const [participantes, setParticipantes] = useState([])
@@ -81,7 +81,7 @@ export default function TicketViewer() {
           Voltar
         </button>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ color: '#F1F5F9', fontWeight: 700, fontSize: 14 }}>COPERNIC 2025</div>
+          <div style={{ color: '#F1F5F9', fontWeight: 700, fontSize: 14 }}>{evento?.nome || 'COPERNIC'}</div>
           <div style={{ color: '#64748B', fontSize: 12 }}>{pedidoId}</div>
         </div>
         <div style={{ width: 60 }} />
@@ -139,10 +139,10 @@ export default function TicketViewer() {
                     Ingresso Corporativo
                   </div>
                   <div style={{ color: '#FFFFFF', fontSize: 22, fontWeight: 800, letterSpacing: 1 }}>
-                    COPERNIC 2025
+                    {evento?.nome || 'COPERNIC'}
                   </div>
                   <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 12, marginTop: 4 }}>
-                    15 de Março de 2025 · Expo SP
+                    {evento?.data ? new Date(evento.data + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'}) : ''}{evento?.local ? ' · ' + evento.local : ''}
                   </div>
                   {/* Decorative circles */}
                   <div style={{ position: 'absolute', right: -20, top: -20, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
@@ -247,7 +247,7 @@ export default function TicketViewer() {
       {/* Bottom action */}
       <div style={{ padding: '0 20px 32px' }}>
         <button
-          onClick={() => generateTicketsPDF(pedido, participantes)}
+          onClick={() => generateTicketsPDF(pedido, participantes, evento)}
           style={{
             width: '100%',
             padding: '14px',

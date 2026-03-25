@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { Users, Ticket, Bus, TrendingUp, Clock, ChevronRight, Loader } from 'lucide-react'
 import AdminHeader from '../../components/AdminHeader'
 import { useNavigate } from 'react-router-dom'
+import { useApp } from '../../context/AppContext'
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
+  const { evento } = useApp()
   const [stats, setStats] = useState(null)
   const [recentPedidos, setRecentPedidos] = useState([])
   const [loading, setLoading] = useState(true)
@@ -34,7 +36,7 @@ export default function AdminDashboard() {
     <div>
       <AdminHeader
         title="Dashboard"
-        subtitle="COPERNIC 2025 · 15 de Março de 2025"
+        subtitle={evento ? `${evento.nome}${evento.data ? ' · ' + new Date(evento.data + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'}) : ''}` : 'Carregando...'}
         action={<span className="badge-green text-sm px-3 py-1">● Emissões abertas</span>}
       />
 
@@ -82,7 +84,10 @@ export default function AdminDashboard() {
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border">
                 <Clock size={14} className="text-accent" />
                 <p className="text-sm text-amber-700 font-medium">
-                  Prazo de emissão encerra em <strong>5 dias</strong> (10/03/2025)
+                  {evento?.prazo_emissao
+                    ? <>Prazo de emissão: até <strong>{new Date(evento.prazo_emissao + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'})}</strong></>
+                    : 'Prazo de emissão não definido'
+                  }
                 </p>
               </div>
             </div>

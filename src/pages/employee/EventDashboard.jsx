@@ -6,7 +6,7 @@ import { useApp } from '../../context/AppContext'
 
 export default function EventDashboard() {
   const navigate = useNavigate()
-  const { user } = useApp()
+  const { user, evento } = useApp()
 
   // Proteção de rota
   useEffect(() => {
@@ -28,13 +28,13 @@ export default function EventDashboard() {
           <div className="absolute inset-0 opacity-10"
             style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
           <p className="text-accent font-semibold text-xs uppercase tracking-widest mb-1">Evento</p>
-          <h2 className="text-white text-2xl font-bold">COPERNIC 2025</h2>
+          <h2 className="text-white text-2xl font-bold">{evento?.nome || 'Carregando...'}</h2>
           <div className="flex flex-wrap gap-3 mt-3">
             <span className="flex items-center gap-1.5 text-white/70 text-sm">
-              <Calendar size={13} /> 15 de Março de 2025
+              <Calendar size={13} /> {evento?.data ? new Date(evento.data + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'}) : ''}
             </span>
             <span className="flex items-center gap-1.5 text-white/70 text-sm">
-              <MapPin size={13} /> Expo SP — Pavilhão 5
+              <MapPin size={13} /> {evento?.local || ''}
             </span>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default function EventDashboard() {
         <div className="bg-accent-light border-t border-amber-200 px-6 py-3 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
           <p className="text-amber-700 text-sm font-medium">
-            Prazo para emissão: até <strong>10 de março de 2025</strong>
+            Prazo para emissão: até <strong>{evento?.prazo_emissao ? new Date(evento.prazo_emissao + 'T12:00:00').toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'}) : ''}</strong>
           </p>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Trophy, Search, ChevronRight, RotateCcw, Users, Zap } from 'lucide-react'
+import { useApp } from '../../context/AppContext'
 
 // --- Slot Machine digit roller ---
 function DigitSlot({ digit, revealed, spinning }) {
@@ -135,6 +136,7 @@ function ParticipantCard({ p, highlightDigits }) {
 
 // --- Main Sorteio page ---
 export default function Sorteio() {
+  const { evento } = useApp()
   const [participantes, setParticipantes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -178,9 +180,8 @@ export default function Sorteio() {
 
   function revealNext() {
     if (!revealedCode) {
-      // Start — pick random winner
+      // Start — pick random winner and show slots ready to reveal
       startSorteio()
-      setSpinning(true)
       return
     }
     if (step >= 3) return
@@ -267,7 +268,7 @@ export default function Sorteio() {
             <Trophy size={20} color="#fff" />
           </div>
           <div>
-            <div style={{ color: '#F1F5F9', fontWeight: 800, fontSize: 18 }}>Sorteio COPERNIC 2025</div>
+            <div style={{ color: '#F1F5F9', fontWeight: 800, fontSize: 18 }}>Sorteio {evento?.nome || 'COPERNIC 2026'}</div>
             <div style={{ color: '#64748B', fontSize: 13 }}>
               {participantes.length} participantes · Código de 3 dígitos
             </div>

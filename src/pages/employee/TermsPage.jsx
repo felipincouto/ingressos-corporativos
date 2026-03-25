@@ -6,7 +6,7 @@ import { useApp } from '../../context/AppContext'
 
 export default function TermsPage() {
   const navigate = useNavigate()
-  const { setOrderDraft } = useApp()
+  const { setOrderDraft, evento } = useApp()
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [transport, setTransport] = useState(null)
 
@@ -30,7 +30,7 @@ export default function TermsPage() {
         </div>
         <div className="bg-surface rounded-lg p-3 h-28 overflow-y-auto text-sm text-muted leading-relaxed mb-4 border border-border">
           <p>
-            Ao aceitar este termo, o colaborador declara estar ciente de que o evento COPERNIC 2025 é de
+            Ao aceitar este termo, o colaborador declara estar ciente de que o evento {evento?.nome || 'este evento'} é de
             caráter corporativo e que qualquer conduta inadequada poderá resultar em medidas disciplinares.
             A empresa não se responsabiliza por incidentes pessoais, perdas materiais ou acidentes ocorridos
             durante o evento. O participante assume a responsabilidade pelo comportamento de seus acompanhantes.

@@ -41,7 +41,15 @@ function hexToRgb(hex) {
   return [r, g, b]
 }
 
-export default async function generateTicketsPDF(pedido, participantes) {
+export default async function generateTicketsPDF(pedido, participantes, evento) {
+  const eventoNome = evento?.nome || 'COPERNIC'
+  const eventoData = evento?.data
+    ? new Date(evento.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })
+    : ''
+  const eventoDataShort = evento?.data
+    ? new Date(evento.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' })
+    : ''
+  const eventoLocal = evento?.local || ''
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
   const W = 210
   const H = 297
@@ -74,12 +82,12 @@ export default async function generateTicketsPDF(pedido, participantes) {
     doc.setFontSize(20)
     doc.setFont('helvetica', 'bold')
     doc.setTextColor(255, 255, 255)
-    doc.text('COPERNIC 2025', 46, 21)
+    doc.text(eventoNome, 46, 21)
 
     doc.setFontSize(8.5)
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(160, 195, 230)
-    doc.text('15 de Março de 2025  ·  Expo SP  ·  Ingresso Corporativo', 46, 29)
+    doc.text(`${eventoData}${eventoLocal ? '  ·  ' + eventoLocal : ''}  ·  Ingresso Corporativo`, 46, 29)
 
     // Order code (top right)
     doc.setFontSize(8)
@@ -222,8 +230,8 @@ export default async function generateTicketsPDF(pedido, participantes) {
     doc.setFontSize(8.5)
     doc.setFont('helvetica', 'bold')
     doc.setTextColor(...hexToRgb('#334155'))
-    doc.text('15 Mar 2025', col1, stripY + 14)
-    doc.text('Expo SP', col2, stripY + 14)
+    doc.text(eventoDataShort || eventoData || '—', col1, stripY + 14)
+    doc.text(eventoLocal || '—', col2, stripY + 14)
     doc.text(pedido.transporte ? 'Ônibus incluso' : 'Particular', col3, stripY + 14, { align: 'right' })
 
     // Terms note
@@ -231,7 +239,7 @@ export default async function generateTicketsPDF(pedido, participantes) {
     doc.setFont('helvetica', 'italic')
     doc.setTextColor(...hexToRgb('#CBD5E1'))
     doc.text(
-      'Termos e condições aceitos pelo titular. Ingresso válido exclusivamente para o evento COPERNIC 2025.',
+      `Termos e condições aceitos pelo titular. Ingresso válido exclusivamente para o evento ${eventoNome}.`,
       W / 2, stripY + 26, { align: 'center', maxWidth: cW - 16 }
     )
 

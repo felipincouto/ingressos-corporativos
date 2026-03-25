@@ -1,9 +1,11 @@
+import { useEffect } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Upload, List, Printer, PackageCheck,
-  QrCode, BarChart3, LogOut, Ticket, Trophy
+  QrCode, BarChart3, LogOut, Ticket, Trophy, CalendarDays
 } from 'lucide-react'
 import clsx from 'clsx'
+import { useApp } from '../context/AppContext'
 
 const NAV = [
   { to: '/admin/dashboard',  label: 'Dashboard',   icon: LayoutDashboard },
@@ -12,12 +14,25 @@ const NAV = [
   { to: '/admin/impressao',  label: 'Impressão',    icon: Printer },
   { to: '/admin/retirada',   label: 'Retirada',     icon: PackageCheck },
   { to: '/admin/checkin',    label: 'Check-in',     icon: QrCode },
+  { to: '/admin/evento',     label: 'Evento',       icon: CalendarDays },
   { to: '/admin/relatorios', label: 'Relatórios',   icon: BarChart3 },
-  { to: '/admin/sorteio',    label: 'Sorteio',       icon: Trophy },
+  { to: '/admin/sorteio',    label: 'Sorteio',      icon: Trophy },
 ]
 
 export default function AdminLayout() {
   const navigate = useNavigate()
+  const { adminUser, adminLogout } = useApp()
+
+  useEffect(() => {
+    if (!adminUser) {
+      navigate('/admin/login', { replace: true })
+    }
+  }, [adminUser])
+
+  function handleLogout() {
+    adminLogout()
+    navigate('/admin/login')
+  }
 
   return (
     <div className="flex h-screen bg-surface overflow-hidden">
@@ -58,7 +73,7 @@ export default function AdminLayout() {
         {/* Footer */}
         <div className="p-3 border-t border-white/10">
           <button
-            onClick={() => navigate('/')}
+            onClick={handleLogout}
             className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-white/50 hover:text-white hover:bg-white/10 text-sm transition-colors"
           >
             <LogOut size={16} />
