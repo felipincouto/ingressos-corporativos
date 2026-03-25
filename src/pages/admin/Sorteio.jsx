@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Trophy, Search, ChevronRight, RotateCcw, Users, Zap } from 'lucide-react'
 
 // --- Slot Machine digit roller ---
@@ -107,7 +107,9 @@ function ParticipantCard({ p, highlightDigits }) {
         <div style={{ display: 'flex', gap: 3 }}>
           {code.split('').map((d, i) => (
             <span key={i} style={{
-              display: 'inline-block',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               width: 24,
               height: 30,
               borderRadius: 6,
@@ -117,9 +119,6 @@ function ParticipantCard({ p, highlightDigits }) {
               fontWeight: 800,
               fontFamily: 'monospace',
               fontSize: 14,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               transition: 'all 0.3s',
             }}>
               {i < highlightDigits ? d : '?'}
@@ -151,9 +150,13 @@ export default function Sorteio() {
   // Load participants
   useEffect(() => {
     fetch('/api/sorteio')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error('status ' + r.status)
+        return r.json()
+      })
       .then(data => {
         setParticipantes(data.participantes || [])
+        setError('')
         setLoading(false)
       })
       .catch(() => {

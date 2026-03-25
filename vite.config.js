@@ -5,6 +5,9 @@ import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    include: ['qrcode'],
+  },
   css: {
     postcss: {
       plugins: [tailwindcss, autoprefixer],

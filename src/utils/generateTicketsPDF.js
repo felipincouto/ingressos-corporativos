@@ -1,11 +1,36 @@
 import jsPDF from 'jspdf'
-import QRCode from 'qrcode'
+import { createRoot } from 'react-dom/client'
+import { QRCodeCanvas } from 'qrcode.react'
+import { createElement } from 'react'
 
-async function qrDataUrl(text) {
-  return await QRCode.toDataURL(text, {
-    width: 300,
-    margin: 1,
-    color: { dark: '#1E293B', light: '#FFFFFF' },
+/**
+ * Renders a QRCodeCanvas into an offscreen div and returns a PNG data URL.
+ */
+function qrToDataUrl(value, size = 300) {
+  return new Promise(resolve => {
+    const container = document.createElement('div')
+    container.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:'+size+'px;height:'+size+'px'
+    document.body.appendChild(container)
+
+    const root = createRoot(container)
+    root.render(
+      createElement(QRCodeCanvas, {
+        value,
+        size,
+        marginSize: 1,
+        fgColor: '#1E293B',
+        bgColor: '#FFFFFF',
+      })
+    )
+
+    // Give React a tick to render, then grab the canvas
+    setTimeout(() => {
+      const canvas = container.querySelector('canvas')
+      const dataUrl = canvas ? canvas.toDataURL('image/png') : null
+      root.unmount()
+      document.body.removeChild(container)
+      resolve(dataUrl)
+    }, 80)
   })
 }
 
@@ -27,204 +52,196 @@ export default async function generateTicketsPDF(pedido, participantes) {
 
     if (idx > 0) doc.addPage()
 
-    // ── Background ──────────────────────────────────────────────────────────
+    // ── Page background ──────────────────────────────────────────────────
     doc.setFillColor(248, 250, 252)
     doc.rect(0, 0, W, H, 'F')
 
-    // ── Header gradient simulation (two rects) ────────────────────────────
+    // ── Header bar ───────────────────────────────────────────────────────
     doc.setFillColor(...hexToRgb('#1E3A5F'))
-    doc.rect(0, 0, W, 58, 'F')
+    doc.rect(0, 0, W, 52, 'F')
     doc.setFillColor(...hexToRgb('#1D4ED8'))
-    doc.rect(0, 44, W, 14, 'F')
+    doc.rect(0, 40, W, 12, 'F')
 
-    // Header decorative circles
-    doc.setFillColor(255, 255, 255)
-    doc.setGState(doc.GState({ opacity: 0.04 }))
-    doc.circle(W - 10, -10, 35, 'F')
-    doc.circle(W + 5, 55, 28, 'F')
-    doc.setGState(doc.GState({ opacity: 1 }))
-
-    // Logo area — ticket icon placeholder
+    // Amber logo block
     doc.setFillColor(...hexToRgb('#F59E0B'))
-    doc.roundedRect(14, 10, 28, 28, 4, 4, 'F')
+    doc.roundedRect(14, 9, 26, 26, 4, 4, 'F')
+    doc.setFontSize(14)
+    doc.setFont('helvetica', 'bold')
     doc.setTextColor(255, 255, 255)
-    doc.setFontSize(16)
-    doc.setFont('helvetica', 'bold')
-    doc.text('🎟', 18, 28)
+    doc.text('IC', 27, 26, { align: 'center' })
 
-    // Event name
-    doc.setTextColor(255, 255, 255)
-    doc.setFontSize(22)
-    doc.setFont('helvetica', 'bold')
-    doc.text('COPERNIC 2025', 48, 22)
-
-    doc.setFontSize(9)
-    doc.setFont('helvetica', 'normal')
-    doc.setTextColor(180, 200, 230)
-    doc.text('15 de Março de 2025  ·  Expo SP  ·  Ingresso Corporativo', 48, 30)
-
-    // Order code in header top right
-    doc.setFontSize(8)
-    doc.setTextColor(150, 180, 210)
-    doc.text(`Pedido: ${pedido.codigo}`, W - 14, 14, { align: 'right' })
-
-    // ── Ticket card (white rounded rect) ─────────────────────────────────
-    const cardX = 20
-    const cardY = 68
-    const cardW = W - 40
-    const cardH = H - 88
-
-    doc.setFillColor(255, 255, 255)
-    doc.roundedRect(cardX, cardY, cardW, cardH, 6, 6, 'F')
-
-    // Card top notch simulation
-    doc.setFillColor(...hexToRgb('#F8FAFC'))
-    doc.rect(0, 56, W, 16, 'F')
-
-    // ── Participant section ───────────────────────────────────────────────
-    const bodyX = cardX + 14
-    let y = cardY + 16
-
-    // Ticket number badge
-    doc.setFillColor(...hexToRgb('#EFF6FF'))
-    doc.roundedRect(bodyX, y - 6, 36, 12, 3, 3, 'F')
-    doc.setTextColor(...hexToRgb('#1D4ED8'))
-    doc.setFontSize(8)
-    doc.setFont('helvetica', 'bold')
-    doc.text(`Ingresso ${idx + 1} de ${participantes.length}`, bodyX + 18, y + 2, { align: 'center' })
-
-    y += 14
-
-    // Participant label
-    doc.setFontSize(8)
-    doc.setFont('helvetica', 'normal')
-    doc.setTextColor(...hexToRgb('#94A3B8'))
-    doc.text('PARTICIPANTE', bodyX, y)
-    y += 7
-
-    // Participant name
+    // Event title
     doc.setFontSize(20)
     doc.setFont('helvetica', 'bold')
-    doc.setTextColor(...hexToRgb('#1E293B'))
-    doc.text(p.nome || '—', bodyX, y)
-    y += 8
+    doc.setTextColor(255, 255, 255)
+    doc.text('COPERNIC 2025', 46, 21)
 
-    // Vínculo badge
-    const vinculo = p.vinculo || 'Titular'
-    const badgeBg = isTitular ? '#EFF6FF' : '#F8FAFC'
-    const badgeFg = isTitular ? '#1D4ED8' : '#64748B'
-    const badgeBorder = isTitular ? '#BFDBFE' : '#E2E8F0'
-    doc.setFillColor(...hexToRgb(badgeBg))
-    doc.setDrawColor(...hexToRgb(badgeBorder))
-    doc.setLineWidth(0.3)
-    doc.roundedRect(bodyX, y, 30, 9, 2, 2, 'FD')
+    doc.setFontSize(8.5)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(160, 195, 230)
+    doc.text('15 de Março de 2025  ·  Expo SP  ·  Ingresso Corporativo', 46, 29)
+
+    // Order code (top right)
     doc.setFontSize(8)
-    doc.setFont('helvetica', 'bold')
-    doc.setTextColor(...hexToRgb(badgeFg))
-    doc.text(vinculo, bodyX + 15, y + 6, { align: 'center' })
-    y += 16
+    doc.setTextColor(120, 160, 200)
+    doc.text(`Pedido: ${pedido.codigo}`, W - 14, 13, { align: 'right' })
 
-    // ── Dashed divider ────────────────────────────────────────────────────
-    doc.setLineDashPattern([2, 2], 0)
-    doc.setDrawColor(...hexToRgb('#E2E8F0'))
-    doc.setLineWidth(0.5)
-    doc.line(cardX + 8, y, cardX + cardW - 8, y)
-    doc.setLineDashPattern([], 0)
+    // ── White ticket card ────────────────────────────────────────────────
+    const cX = 18
+    const cY = 64
+    const cW = W - 36
+    const cH = H - 80
+
+    doc.setFillColor(255, 255, 255)
+    doc.roundedRect(cX, cY, cW, cH, 6, 6, 'F')
+
+    // Notch circles on sides
+    doc.setFillColor(248, 250, 252)
+    doc.circle(cX, cY + cH * 0.55, 5, 'F')
+    doc.circle(cX + cW, cY + cH * 0.55, 5, 'F')
+
+    // ── Card content ─────────────────────────────────────────────────────
+    const bX = cX + 14
+    let y = cY + 16
+
+    // Ticket badge
+    const badgeLabel = `Ingresso ${idx + 1} de ${participantes.length}`
+    doc.setFillColor(...hexToRgb('#EFF6FF'))
+    doc.roundedRect(bX, y - 5, 44, 10, 2, 2, 'F')
+    doc.setFontSize(7.5)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...hexToRgb('#1D4ED8'))
+    doc.text(badgeLabel, bX + 22, y + 2, { align: 'center' })
     y += 12
 
-    // ── QR Code ───────────────────────────────────────────────────────────
-    const qrValue = p.ingresso_codigo || `ING-${String(pedido.id).padStart(3, '0')}-${String(idx + 1).padStart(3, '0')}`
-    let qrY = y
-    try {
-      const qrUrl = await qrDataUrl(qrValue)
-      const qrSize = 50
-      const qrX = W / 2 - qrSize / 2
-      // QR background box
-      doc.setFillColor(...hexToRgb('#F8FAFC'))
-      doc.setDrawColor(...hexToRgb('#E2E8F0'))
-      doc.setLineWidth(0.4)
-      doc.roundedRect(qrX - 6, qrY - 2, qrSize + 12, qrSize + 12, 4, 4, 'FD')
-      doc.addImage(qrUrl, 'PNG', qrX, qrY + 2, qrSize, qrSize)
-      y = qrY + qrSize + 18
+    // Participant label
+    doc.setFontSize(7.5)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(...hexToRgb('#94A3B8'))
+    doc.text('PARTICIPANTE', bX, y)
+    y += 6
 
-      // Ingresso code below QR
-      doc.setFontSize(10)
-      doc.setFont('helvetica', 'bold')
-      doc.setTextColor(...hexToRgb('#475569'))
-      doc.text(qrValue, W / 2, y - 4, { align: 'center' })
+    // Name
+    doc.setFontSize(18)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...hexToRgb('#1E293B'))
+    doc.text(p.nome || '—', bX, y)
+    y += 7
+
+    // Vínculo chip
+    const vinculo = p.vinculo || 'Titular'
+    const chipBg = isTitular ? '#EFF6FF' : '#F8FAFC'
+    const chipFg = isTitular ? '#1D4ED8' : '#64748B'
+    const chipBd = isTitular ? '#BFDBFE' : '#E2E8F0'
+    doc.setFillColor(...hexToRgb(chipBg))
+    doc.setDrawColor(...hexToRgb(chipBd))
+    doc.setLineWidth(0.3)
+    doc.roundedRect(bX, y, 32, 8, 2, 2, 'FD')
+    doc.setFontSize(7.5)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...hexToRgb(chipFg))
+    doc.text(vinculo, bX + 16, y + 5.5, { align: 'center' })
+    y += 14
+
+    // Dashed divider
+    doc.setLineDashPattern([2, 2], 0)
+    doc.setDrawColor(...hexToRgb('#E2E8F0'))
+    doc.setLineWidth(0.4)
+    doc.line(cX + 6, y, cX + cW - 6, y)
+    doc.setLineDashPattern([], 0)
+    y += 10
+
+    // ── QR Code ───────────────────────────────────────────────────────────
+    const qrValue = p.ingresso_codigo ||
+      `ING-${String(pedido.id).padStart(3, '0')}-${String(idx + 1).padStart(3, '0')}`
+
+    const qrSize = 48
+    const qrX = W / 2 - qrSize / 2
+
+    try {
+      const dataUrl = await qrToDataUrl(qrValue, 300)
+      if (dataUrl) {
+        // Box around QR
+        doc.setFillColor(...hexToRgb('#F8FAFC'))
+        doc.setDrawColor(...hexToRgb('#E2E8F0'))
+        doc.setLineWidth(0.3)
+        doc.roundedRect(qrX - 5, y - 2, qrSize + 10, qrSize + 10, 3, 3, 'FD')
+        doc.addImage(dataUrl, 'PNG', qrX, y + 2, qrSize, qrSize)
+        y += qrSize + 16
+      }
     } catch {
-      y += 10
-      doc.setFontSize(9)
-      doc.setTextColor(...hexToRgb('#94A3B8'))
-      doc.text(qrValue, W / 2, y, { align: 'center' })
-      y += 14
+      y += 6
     }
+
+    // Ingresso code
+    doc.setFontSize(9.5)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...hexToRgb('#475569'))
+    doc.text(qrValue, W / 2, y, { align: 'center' })
+    y += 14
 
     // ── Raffle code (titular only) ────────────────────────────────────────
     if (isTitular && pedido.codigo_sorteio) {
-      y += 4
       doc.setFillColor(...hexToRgb('#FFFBEB'))
       doc.setDrawColor(...hexToRgb('#F59E0B'))
       doc.setLineWidth(0.6)
       doc.setLineDashPattern([2.5, 1.5], 0)
-      doc.roundedRect(cardX + 10, y, cardW - 20, 26, 4, 4, 'FD')
+      doc.roundedRect(cX + 8, y, cW - 16, 24, 4, 4, 'FD')
       doc.setLineDashPattern([], 0)
 
       doc.setFontSize(8)
       doc.setFont('helvetica', 'bold')
       doc.setTextColor(...hexToRgb('#92400E'))
-      doc.text('🏆  CÓDIGO DO SORTEIO', W / 2, y + 8, { align: 'center' })
-
-      doc.setFontSize(20)
+      doc.text('CÓDIGO DO SORTEIO', W / 2, y + 8, { align: 'center' })
+      doc.setFontSize(22)
       doc.setFont('helvetica', 'bold')
       doc.setTextColor(...hexToRgb('#B45309'))
-      doc.text(String(pedido.codigo_sorteio), W / 2, y + 20, { align: 'center' })
-      y += 34
+      doc.text(String(pedido.codigo_sorteio), W / 2, y + 19, { align: 'center' })
+      y += 32
     }
 
     // ── Event info strip ──────────────────────────────────────────────────
-    y = Math.max(y + 8, cardY + cardH - 54)
+    const stripY = Math.max(y + 6, cY + cH - 46)
     doc.setLineDashPattern([2, 2], 0)
     doc.setDrawColor(...hexToRgb('#E2E8F0'))
     doc.setLineWidth(0.4)
-    doc.line(cardX + 8, y, cardX + cardW - 8, y)
+    doc.line(cX + 6, stripY, cX + cW - 6, stripY)
     doc.setLineDashPattern([], 0)
-    y += 8
 
-    const col1 = bodyX
-    const col2 = W / 2
-    const col3 = W / 2 + (cardW / 2 - 20)
+    const col1 = bX
+    const col2 = W / 2 - 10
+    const col3 = W - 32
 
-    doc.setFontSize(7.5)
+    doc.setFontSize(7)
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(...hexToRgb('#94A3B8'))
-    doc.text('DATA', col1, y)
-    doc.text('LOCAL', col2, y)
-    doc.text('TRANSPORTE', col3, y)
+    doc.text('DATA', col1, stripY + 7)
+    doc.text('LOCAL', col2, stripY + 7)
+    doc.text('TRANSPORTE', col3, stripY + 7, { align: 'right' })
 
-    y += 5
-    doc.setFontSize(9)
+    doc.setFontSize(8.5)
     doc.setFont('helvetica', 'bold')
     doc.setTextColor(...hexToRgb('#334155'))
-    doc.text('15 Mar 2025', col1, y)
-    doc.text('Expo SP', col2, y)
-    doc.text(pedido.transporte ? 'Ônibus incluso' : 'Particular', col3, y)
+    doc.text('15 Mar 2025', col1, stripY + 14)
+    doc.text('Expo SP', col2, stripY + 14)
+    doc.text(pedido.transporte ? 'Ônibus incluso' : 'Particular', col3, stripY + 14, { align: 'right' })
 
-    // ── Terms acceptance note ─────────────────────────────────────────────
-    y += 16
-    doc.setFontSize(7)
+    // Terms note
+    doc.setFontSize(6.5)
     doc.setFont('helvetica', 'italic')
     doc.setTextColor(...hexToRgb('#CBD5E1'))
-    const termsText = '✓ Termos e condições aceitos pelo titular. Ingresso válido exclusivamente para o evento COPERNIC 2025.'
-    doc.text(termsText, W / 2, y, { align: 'center', maxWidth: cardW - 20 })
+    doc.text(
+      'Termos e condições aceitos pelo titular. Ingresso válido exclusivamente para o evento COPERNIC 2025.',
+      W / 2, stripY + 26, { align: 'center', maxWidth: cW - 16 }
+    )
 
-    // ── Footer outside card ───────────────────────────────────────────────
+    // ── Page footer ───────────────────────────────────────────────────────
     doc.setFontSize(7)
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(...hexToRgb('#94A3B8'))
-    doc.text('Ingressos Corporativos · Uso interno', W / 2, H - 8, { align: 'center' })
-    doc.text(`Gerado em ${new Date().toLocaleDateString('pt-BR')}`, 14, H - 8)
-    doc.text(`Pág. ${idx + 1}/${participantes.length}`, W - 14, H - 8, { align: 'right' })
+    doc.text('Ingressos Corporativos · Uso interno', W / 2, H - 7, { align: 'center' })
+    doc.text(`Gerado em ${new Date().toLocaleDateString('pt-BR')}`, 14, H - 7)
+    doc.text(`Pág. ${idx + 1}/${participantes.length}`, W - 14, H - 7, { align: 'right' })
   }
 
   doc.save(`ingressos-${pedido.codigo}.pdf`)

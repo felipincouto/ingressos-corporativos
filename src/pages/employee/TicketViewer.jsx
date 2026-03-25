@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Download, Trophy } from 'lucide-react'
-import QRCode from 'qrcode.react'
+import { QRCodeCanvas as QRCode } from 'qrcode.react'
 import { useApp } from '../../context/AppContext'
 import generateTicketsPDF from '../../utils/generateTicketsPDF'
 

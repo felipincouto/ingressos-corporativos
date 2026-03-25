@@ -22,8 +22,8 @@ export default async function handler(req, res) {
         JOIN funcionarios f ON f.id = p.funcionario_id
         LEFT JOIN ingressos i ON i.pedido_id = p.id
         WHERE (${busca || null} IS NULL OR f.nome ILIKE ${'%' + (busca||'') + '%'} OR p.codigo ILIKE ${'%' + (busca||'') + '%'})
-          AND (${status || null} IS NULL OR p.status = ${status})
-          AND (${setor || null} IS NULL OR f.setor = ${setor})
+          AND (${status || null} IS NULL OR p.status = ${status || null})
+          AND (${setor || null} IS NULL OR f.setor = ${setor || null})
         GROUP BY p.id, f.nome, f.setor, f.matricula
         ORDER BY p.criado_em DESC
         LIMIT ${limit} OFFSET ${offset}
@@ -33,8 +33,8 @@ export default async function handler(req, res) {
         FROM pedidos p
         JOIN funcionarios f ON f.id = p.funcionario_id
         WHERE (${busca || null} IS NULL OR f.nome ILIKE ${'%' + (busca||'') + '%'} OR p.codigo ILIKE ${'%' + (busca||'') + '%'})
-          AND (${status || null} IS NULL OR p.status = ${status})
-          AND (${setor || null} IS NULL OR f.setor = ${setor})
+          AND (${status || null} IS NULL OR p.status = ${status || null})
+          AND (${setor || null} IS NULL OR f.setor = ${setor || null})
       `,
     ])
     return res.status(200).json({ pedidos: rows, total: Number(countRow.total) })
