@@ -165,7 +165,7 @@ export default function EventoConfig() {
                     <span className="flex items-center gap-1"><Calendar size={12} /> {fmt(ev.data)}</span>
                     <span className="flex items-center gap-1"><MapPin size={12} /> {ev.local || '—'}</span>
                     {ev.prazo_emissao && (
-                      <span className="flex items-center gap-1 text-xs" style={{ color: '#D97706' }}>
+                      <span className="flex items-center gap-1 text-xs" style={{ color: '#B8002A' }}>
                         <FileText size={11} /> Prazo: {fmt(ev.prazo_emissao)}
                       </span>
                     )}

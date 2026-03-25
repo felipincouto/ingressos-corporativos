@@ -198,13 +198,13 @@ export default function TicketViewer() {
                       marginTop: 16,
                       padding: '12px 16px',
                       borderRadius: 12,
-                      border: '2px dashed #F59E0B',
+                      border: '2px dashed #DC0032',
                       background: '#FFFBEB',
                       display: 'flex',
                       alignItems: 'center',
                       gap: 10,
                     }}>
-                      <Trophy size={18} color="#F59E0B" />
+                      <Trophy size={18} color="#DC0032" />
                       <div>
                         <div style={{ fontSize: 10, fontWeight: 700, color: '#92400E', textTransform: 'uppercase', letterSpacing: 1 }}>
                           Código do Sorteio

@@ -29,11 +29,11 @@ function DigitSlot({ digit, revealed, spinning }) {
       height: 120,
       borderRadius: 16,
       background: revealed
-        ? 'linear-gradient(160deg, #F59E0B, #D97706)'
+        ? 'linear-gradient(160deg, #DC0032, #B8002A)'
         : spinning
           ? 'linear-gradient(160deg, #334155, #1E293B)'
           : 'linear-gradient(160deg, #1E293B, #0F172A)',
-      border: `3px solid ${revealed ? '#F59E0B' : spinning ? '#475569' : '#334155'}`,
+      border: `3px solid ${revealed ? '#DC0032' : spinning ? '#475569' : '#334155'}`,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -115,8 +115,8 @@ function ParticipantCard({ p, highlightDigits }) {
               height: 30,
               borderRadius: 6,
               background: i < highlightDigits ? 'rgba(245,158,11,0.2)' : '#0F172A',
-              border: `1.5px solid ${i < highlightDigits ? '#F59E0B' : '#1E293B'}`,
-              color: i < highlightDigits ? '#F59E0B' : '#334155',
+              border: `1.5px solid ${i < highlightDigits ? '#DC0032' : '#1E293B'}`,
+              color: i < highlightDigits ? '#DC0032' : '#334155',
               fontWeight: 800,
               fontFamily: 'monospace',
               fontSize: 14,
@@ -264,7 +264,7 @@ export default function Sorteio() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{
             width: 40, height: 40, borderRadius: 10,
-            background: 'linear-gradient(135deg, #F59E0B, #D97706)',
+            background: 'linear-gradient(135deg, #DC0032, #B8002A)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <Trophy size={20} color="#fff" />
@@ -347,7 +347,7 @@ export default function Sorteio() {
                     width: step > i ? 28 : 8,
                     height: 8,
                     borderRadius: 4,
-                    background: step > i ? '#F59E0B' : '#334155',
+                    background: step > i ? '#DC0032' : '#334155',
                     transition: 'all 0.3s',
                   }} />
                 ))}
@@ -358,7 +358,7 @@ export default function Sorteio() {
             {step === 4 && winner && (
               <div style={{
                 background: 'linear-gradient(135deg, rgba(245,158,11,0.15), rgba(217,119,6,0.1))',
-                border: '2px solid #F59E0B',
+                border: '2px solid #DC0032',
                 borderRadius: 16,
                 padding: '20px 24px',
                 textAlign: 'center',
@@ -378,7 +378,7 @@ export default function Sorteio() {
                   marginTop: 12,
                   padding: '6px 16px',
                   borderRadius: 99,
-                  background: '#F59E0B',
+                  background: '#DC0032',
                   color: '#78350F',
                   fontWeight: 900,
                   fontSize: 22,
@@ -414,7 +414,7 @@ export default function Sorteio() {
                   ? '#1E293B'
                   : spinning
                     ? '#334155'
-                    : 'linear-gradient(135deg, #F59E0B, #D97706)',
+                    : 'linear-gradient(135deg, #DC0032, #B8002A)',
                 color: step >= 4 ? '#64748B' : '#FFFFFF',
                 border: 'none',
                 cursor: step >= 4 || spinning ? 'not-allowed' : 'pointer',
@@ -454,7 +454,7 @@ export default function Sorteio() {
                 flex: 1, background: '#1E293B', borderRadius: 10, padding: '10px 14px',
                 border: '1px solid #334155', textAlign: 'center',
               }}>
-                <div style={{ color: '#F59E0B', fontSize: 20, fontWeight: 800 }}>{participantes.length}</div>
+                <div style={{ color: '#DC0032', fontSize: 20, fontWeight: 800 }}>{participantes.length}</div>
                 <div style={{ color: '#64748B', fontSize: 11, marginTop: 2 }}>Participantes</div>
               </div>
               <div style={{
@@ -494,7 +494,7 @@ export default function Sorteio() {
                 <Users size={12} />
                 {filtered.length} participante{filtered.length !== 1 ? 's' : ''} exibido{filtered.length !== 1 ? 's' : ''}
                 {step > 0 && step < 4 && (
-                  <span style={{ color: '#F59E0B', marginLeft: 4 }}>
+                  <span style={{ color: '#DC0032', marginLeft: 4 }}>
                     · filtrado por {step} dígito{step > 1 ? 's' : ''}
                   </span>
                 )}

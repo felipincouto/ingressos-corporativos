@@ -71,7 +71,7 @@ export default async function generateTicketsPDF(pedido, participantes, evento) 
     doc.rect(0, 40, W, 12, 'F')
 
     // Amber logo block
-    doc.setFillColor(...hexToRgb('#F59E0B'))
+    doc.setFillColor(...hexToRgb('#DC0032'))
     doc.roundedRect(14, 9, 26, 26, 4, 4, 'F')
     doc.setFontSize(14)
     doc.setFont('helvetica', 'bold')
@@ -191,7 +191,7 @@ export default async function generateTicketsPDF(pedido, participantes, evento) 
     // ── Raffle code (titular only) ────────────────────────────────────────
     if (isTitular && pedido.codigo_sorteio) {
       doc.setFillColor(...hexToRgb('#FFFBEB'))
-      doc.setDrawColor(...hexToRgb('#F59E0B'))
+      doc.setDrawColor(...hexToRgb('#DC0032'))
       doc.setLineWidth(0.6)
       doc.setLineDashPattern([2.5, 1.5], 0)
       doc.roundedRect(cX + 8, y, cW - 16, 24, 4, 4, 'FD')
